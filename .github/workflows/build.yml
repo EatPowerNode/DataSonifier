@@ -33,6 +33,7 @@ jobs:
         pyinstaller --onefile --windowed sonifier.py
 
     - name: Rename executable for clarity
+      shell: bash  # Force Bash shell for this step on all platforms
       run: |
         if [ "${{ matrix.os }}" == "windows-latest" ]; then
           mv dist/sonifier.exe dist/sonifier-windows.exe
@@ -46,4 +47,4 @@ jobs:
       uses: actions/upload-artifact@v4
       with:
         name: sonifier-${{ matrix.os }}
-        path: dist/dsonifier-*
+        path: dist/sonifier-*
