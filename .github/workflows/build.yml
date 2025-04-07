@@ -1,0 +1,49 @@
+name: Build DataSonifier Executables
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  build:
+    strategy:
+      matrix:
+        os: [windows-latest, ubuntu-latest, macos-latest]
+
+    runs-on: ${{ matrix.os }}
+
+    steps:
+    - name: Checkout repository
+      uses: actions/checkout@v4
+
+    - name: Set up Python
+      uses: actions/setup-python@v5
+      with:
+        python-version: '3.11'
+
+    - name: Install dependencies
+      run: |
+        python -m pip install --upgrade pip
+        pip install pyinstaller matplotlib numpy pygame
+
+    - name: Build executable with PyInstaller
+      run: |
+        pyinstaller --onefile --windowed data_sonifier.py
+
+    - name: Rename executable for clarity
+      run: |
+        if [ "${{ matrix.os }}" == "windows-latest" ]; then
+          mv dist/data_sonifier.exe dist/data_sonifier-windows.exe
+        elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
+          mv dist/data_sonifier dist/data_sonifier-linux
+        else
+          mv dist/data_sonifier dist/data_sonifier-macos
+        fi
+
+    - name: Upload executable as artifact
+      uses: actions/upload-artifact@v4
+      with:
+        name: data_sonifier-${{ matrix.os }}
+        path: dist/data_sonifier-*

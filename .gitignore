@@ -8,6 +8,8 @@
 !*.py
 !*.png
 !*.md
+!*.yml
+!*.github/
 
 # whitelist everything in ./config/
 
