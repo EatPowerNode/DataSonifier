@@ -28,3 +28,11 @@ Turn any file into a musical and visual experience! This script reads a file as 
 ## Example
 Try sonifying an image file (e.g., a PNG or JPEG) to hear and see its binary structure as music and a graph!
 
+## Example
+Here’s what the output looks like when sonifying a random image file (`2UX91cwm55ck.png`):
+
+![Example Output](example_screenshot.png)
+
+The top graph shows the height path of the binary data, with alternating runs in red. The bottom graph shows the rate of change, which drives the sound. The result is a surprisingly musical melody with a rhythmic beat!
+
+Try sonifying an image file (e.g., a PNG or JPEG) to hear and see its binary structure as music and a graph!
