@@ -1,0 +1,15 @@
+*
+!*/
+
+# track this file
+
+!.gitignore
+!LICENSE
+!*.py
+!*.png
+!*.md
+
+# whitelist everything in ./config/
+
+
+!config/

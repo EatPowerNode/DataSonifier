@@ -5,6 +5,7 @@ import tkinter as tk
 from tkinter import filedialog
 import threading
 import queue
+import os  # Add this import for handling file paths
 try:
     import pygame
     pygame_available = True
@@ -16,29 +17,32 @@ except ImportError:
 global_heights = []
 global_runs = []
 global_freqs = []
-audio_queue = queue.Queue()  # Queue to control audio playback
+audio_queue = queue.Queue()
 audio_thread = None
 stop_audio_flag = False
 
 def load_binary_data():
     """Load binary data from a file selected by the user."""
+    # Ensure the working directory is set correctly for the executable
+    if getattr(sys, 'frozen', False):
+        os.chdir(sys._MEIPASS)  # Set working directory to the temporary folder created by PyInstaller
     root = tk.Tk()
-    root.withdraw()  # Hide the main window
+    root.withdraw()
     file_path = filedialog.askopenfilename(title="Select a file to sonify")
     if not file_path:
         print("No file selected. Exiting.")
         exit(1)
 
-    bit_limit = 5000  # Process 5,000 bits
-    bit_offset = 10000  # Skip the first 10,000 bits
+    bit_limit = 5000
+    bit_offset = 10000
     binary = ""
     try:
         with open(file_path, "rb") as file:
-            file.seek(bit_offset // 8)  # Skip to the desired byte offset
-            byte_data = file.read(bit_limit // 8 + 1)  # Read enough bytes
+            file.seek(bit_offset // 8)
+            byte_data = file.read(bit_limit // 8 + 1)
             for byte in byte_data:
-                binary += format(byte, '08b')  # Convert each byte to 8-bit binary string
-        binary = binary[:bit_limit]  # Trim to desired bit length
+                binary += format(byte, '08b')
+        binary = binary[:bit_limit]
     except FileNotFoundError:
         print(f"File not found: {file_path}.")
         exit(1)
@@ -71,7 +75,7 @@ def process_binary_data(binary):
     if current_count > 0:
         runs.append((current_run, current_count))
 
-    heights = [0]  # Starting height
+    heights = [0]
     bit_idx = 0
     for run_type, run_length in runs:
         if run_type == 'alternating':
@@ -92,21 +96,17 @@ def process_binary_data(binary):
 
 def compute_rate_of_change(heights):
     """Compute the rate of change of heights and smooth it."""
-    rate_of_change = np.diff(heights)  # Length: 5000
-    # Smooth with a larger moving average for sound
+    rate_of_change = np.diff(heights)
     window_size = 200
     smoothed_rate = np.convolve(rate_of_change, np.ones(window_size)/window_size, mode='valid')
-    # Pad to match length of heights[1:] (5000)
     pad_before = (window_size - 1) // 2
     pad_after = (window_size - 1) - pad_before
     smoothed_rate = np.pad(smoothed_rate, (pad_before, pad_after), mode='edge')
-    # Ensure length matches
     if len(smoothed_rate) < len(rate_of_change):
         smoothed_rate = np.pad(smoothed_rate, (0, len(rate_of_change) - len(smoothed_rate)), mode='edge')
     elif len(smoothed_rate) > len(rate_of_change):
         smoothed_rate = smoothed_rate[:len(rate_of_change)]
 
-    # Smooth for display
     display_window_size = 50
     display_smoothed_rate = np.convolve(rate_of_change, np.ones(display_window_size)/display_window_size, mode='valid')
     pad_before_display = (display_window_size - 1) // 2
@@ -172,7 +172,7 @@ def stop_sound(event):
     global stop_audio_flag
     stop_audio_flag = True
     if audio_thread is not None:
-        audio_thread.join()  # Wait for the thread to finish
+        audio_thread.join()
 
 def main():
     """Main function to load data, process it, and display the graph with interactive buttons."""
@@ -225,7 +225,6 @@ def main():
     ax2.set_ylabel("Rate of Change")
     ax2.grid(True, linestyle='--', alpha=0.7)
 
-    # Add play and stop buttons
     ax_play = plt.axes([0.71, 0.01, 0.1, 0.05])
     btn_play = Button(ax_play, 'Play Sound')
     btn_play.on_clicked(play_sound)
@@ -246,4 +245,5 @@ def main():
     print(f"Maximum height: {max_height}")
 
 if __name__ == "__main__":
+    import sys  # Add this import for PyInstaller compatibility
     main()
