@@ -1,4 +1,4 @@
-# Binary Sonifier
+# Data Sonifier
 
 Turn any file into a musical and visual experience! This script reads a file as a binary string, converts it into a step graph (inspired by the Nintendo sound chip), and plays it as a melody using a pentatonic scale.
 
@@ -9,10 +9,10 @@ Turn any file into a musical and visual experience! This script reads a file as 
   pip install matplotlib numpy pygame
 
 ## How to Run
-1. Save the script as `binary_sonifier.py`.
+1. Save the script as `sonifier.py`.
 2. Run the script:
 
-   python binary_sonifier.py
+   python sonifier.py
 
 3. A file dialog will open. Select any file to sonify (e.g., an executable, text file, or image).
 4. A graph will display, showing the height path and rate of change of the binary data.
