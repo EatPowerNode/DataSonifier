@@ -3,8 +3,12 @@ name: Build DataSonifier Executables
 on:
   push:
     branches: [ main ]
+    paths:
+      - '**.py'  # Trigger only when Python files are changed
   pull_request:
     branches: [ main ]
+    paths:
+      - '**.py'
 
 jobs:
   build:
@@ -33,7 +37,7 @@ jobs:
         pyinstaller --onefile --windowed sonifier.py
 
     - name: Rename executable for clarity
-      shell: bash  # Force Bash shell for this step on all platforms
+      shell: bash
       run: |
         if [ "${{ matrix.os }}" == "windows-latest" ]; then
           mv dist/sonifier.exe dist/sonifier-windows.exe
