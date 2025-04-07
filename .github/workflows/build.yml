@@ -30,20 +30,20 @@ jobs:
 
     - name: Build executable with PyInstaller
       run: |
-        pyinstaller --onefile --windowed data_sonifier.py
+        pyinstaller --onefile --windowed sonifier.py
 
     - name: Rename executable for clarity
       run: |
         if [ "${{ matrix.os }}" == "windows-latest" ]; then
-          mv dist/data_sonifier.exe dist/data_sonifier-windows.exe
+          mv dist/sonifier.exe dist/sonifier-windows.exe
         elif [ "${{ matrix.os }}" == "ubuntu-latest" ]; then
-          mv dist/data_sonifier dist/data_sonifier-linux
+          mv dist/sonifier dist/sonifier-linux
         else
-          mv dist/data_sonifier dist/data_sonifier-macos
+          mv dist/sonifier dist/sonifier-macos
         fi
 
     - name: Upload executable as artifact
       uses: actions/upload-artifact@v4
       with:
-        name: data_sonifier-${{ matrix.os }}
-        path: dist/data_sonifier-*
+        name: sonifier-${{ matrix.os }}
+        path: dist/dsonifier-*
