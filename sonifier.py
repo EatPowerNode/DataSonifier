@@ -14,7 +14,7 @@ except ImportError:
     pygame_available = False
     print("Pygame not installed. Audio features will be skipped. Install with: 'pip install pygame'")
 
-# Global variables to store data for sound playback
+# Global variables to store data for sound playback.
 global_heights = []
 global_runs = []
 global_freqs = []
