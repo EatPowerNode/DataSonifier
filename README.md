@@ -4,9 +4,9 @@ Turn any file into a musical and visual experience! This script reads a file as 
 
 ## Downloads
 Download the pre-built executable for your platform (no Python installation required):
-- [Windows (64-bit)](https://placeholder-windows-url)
-- [Linux (64-bit)](https://placeholder-linux-url)
-- [macOS (64-bit)](https://placeholder-macos-url)
+- [Windows (64-bit)](https://github.com/EatPowerNode/DataSonifier/actions/runs/14323477970/artifacts/2899604744)
+- [Linux (64-bit)](https://github.com/EatPowerNode/DataSonifier/actions/runs/14323477970/artifacts/2899600837)
+- [macOS (64-bit)](https://github.com/EatPowerNode/DataSonifier/actions/runs/14323477970/artifacts/2899598746)
 
 ## Requirements
 For running the Python script directly:
